@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finance - India</title>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'Roboto', sans-serif;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        color: white;
+        background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkQP-amp1fEviLsP13blSIFKOiHTm_TOey7Q&s');
+    }
+
+    .overlay {
+        width: 100%;
+        height: 100%;
+        background: rgba(50,50,0,0.5);
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 0;
+    }
+
+    .container {
+        position: relative;
+        z-index: 1;
+        padding: 40px;
+        max-width: 1200px;
+        margin: auto;
+    }
+
+    h1 {
+        font-size: 48px;
+        text-align: center;
+        margin-bottom: 20px;
+        color: #ffd700;
+        text-shadow: 0 0 10px #b8860b;
+    }
+
+    p.intro {
+        font-size: 18px;
+        text-align: center;
+        max-width: 900px;
+        margin: 0 auto 40px auto;
+        line-height: 1.6;
+        color: #fffacd;
+        text-shadow: 0 0 6px #b8860b;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 25px;
+        margin-top: 20px;
+    }
+
+    .grid a {
+        display: block;
+        text-decoration: none;
+        border: 2px solid #ffd700;
+        border-radius: 12px;
+        overflow: hidden;
+        transition: transform 0.3s, box-shadow 0.3s;
+        background: rgba(50,50,0,0.7);
+        color: white;
+    }
+
+    .grid a:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 20px #ffd700;
+    }
+
+    .grid a .title {
+        text-align: center;
+        padding: 12px 0;
+        font-weight: bold;
+        font-size: 16px;
+        background: linear-gradient(90deg, #b8860b, #ffd700);
+        text-shadow: 0 0 5px #b8860b;
+    }
+
+    .grid a img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        display: block;
+    }
+</style>
+</head>
+<body>
+
+<div class="overlay"></div>
+<div class="container">
+
+<h1>Finance</h1>
+<p class="intro">
+Finance initiatives in India focus on financial inclusion, digital banking, and secure monetary transactions. Government schemes provide accessible financial services, promote savings, credit, and investments, and ensure economic growth and stability nationwide.
+</p>
+
+<div class="grid">
+
+    <a href="https://www.digitalindia.gov.in/initiative/national-automated-clearing-house-nach/" target="_blank">
+        <div class="title">NACH</div>
+        <img src="https://wpblogassets.paytm.com/paytmblog/uploads/2025/08/nach-paytm.jpg" alt="PMJDY">
+    </a>
+
+    <a href="https://www.digitalindia.gov.in/initiative/gst-e-invoice-system/" target="_blank">
+        <div class="title">E-invoice</div>
+        <img src="https://www.shutterstock.com/image-vector/vector-icon-style-illustration-concept-260nw-616951073.jpg" alt="PMKVY">
+    </a>
+
+    <a href="https://www.digitalindia.gov.in/initiative/aeps/" target="_blank">
+        <div class="title">AePS</div>
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAcDm_Qp9LVhaIodoZkLsNvUerkXpC9IvSrw&s" alt="RBI">
+    </a>
+
+    <a href="https://www.digitalindia.gov.in/initiative/e-rupi/" target="_blank">
+        <div class="title">E-rupi</div>
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHCltZLS8C4NyhL1TIwl2x7YO-KW4Ax4CQOA&s" alt="Digital Payments">
+    </a>
+
+    <a href="https://www.digitalindia.gov.in/initiative/unified-payment-interface-upi/" target="_blank">
+        <div class="title">UPI</div>
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcToez0OLRfxx26lyM8_defkYEHxarohym0O2g&s" alt="NPCI">
+    </a>
+
+</div>
+
+</div>
+
+</body>
+</html>

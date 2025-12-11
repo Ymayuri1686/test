@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Memory — DigiIndia</title>
+
+<!-- Font Awesome for home icon -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+  body{font-family :Arial,Helvetica,sans-serif;background:#071022;color:#fff;display:flex;flex-direction:column;align-items:center;padding:20px} 
+  h1{color:#00e5ff}
+  #board{width:720px;max-width:96vw;display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0}
+  .card{background:#0b2233;border-radius:8px;height:110px;display:flex;align-items:center;justify-content:center;font-weight:700;cursor:pointer;user-select:none;position:relative;transition:background .25s, color .25s, transform .18s}
+  .card.flipped{background:#00c6ff;color:#002;transform:none}
+  .card.matched{background:linear-gradient(90deg,#00c6ff,#0072ff);color:#002;cursor:default}
+  .meta{display:flex;gap:12px;align-items:center}
+  .leaderboard{margin-top:18px;background:#012233;padding:12px;border-radius:8px;width:320px}
+  .home-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;z-index:999}
+  .home-card{background:#021427;padding:22px;border-radius:10px;color:#fff;width:320px;text-align:center}
+  button{cursor:pointer;padding:8px 12px;border-radius:8px;border:none;background:#00c6ff}
+  small{color:#9fd}
+
+  /* Floating Home Icon */
+  #homeIcon{
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+    font-size: 2rem;
+    color: #00ffff;
+    text-shadow: 0 0 12px rgba(0,255,255,0.7);
+    cursor: pointer;
+    transition: transform 0.3s, color 0.3s;
+  }
+  #homeIcon:hover{
+    color: #00ff88;
+    transform: scale(1.2);
+  }
+</style>
+</head>
+<body>
+
+<!-- Floating Home Icon -->
+<a id="homeIcon" href="test.html" title="Go Home"><i class="fas fa-home"></i></a>
+
+<h1>DigiIndia Memory — Match the Topics</h1>
+<div class="meta">
+  <div>Attempts: <span id="attempts">0</span></div>
+  <div>Matches: <span id="matches">0</span></div>
+  <div style="margin-left:12px"><button id="shuffleBtn">Shuffle / Restart</button></div>
+</div>
+
+<div id="board"></div>
+
+<div class="leaderboard">
+  <h3>Leaderboard (Memory)</h3>
+  <ul id="lb" style="list-style:none;padding:0;margin:0"></ul>
+  <small>Scores saved locally</small>
+</div>
+
+<div id="home" class="home-overlay" style="display:none">
+  <div class="home-card">
+    <h2>Welcome to DigiIndia Games</h2>
+    <p>Enter your name to play the Memory game</p>
+    <input id="nameInput" placeholder="Your name" style="width:100%;padding:8px;border-radius:6px;border:none;margin-top:8px">
+    <div style="margin-top:10px"><button id="start">Start</button></div>
+  </div>
+</div>
+
+<script>
+// Topics related to DigiIndia
+const items = [
+  'DigiAgriculture','DigiInfrastructure','EmergingTech','Education','Entrepreneurship',
+  'Finance','Healthcare','Logistics'
+];
+
+let boardEl = document.getElementById('board');
+let attemptsEl = document.getElementById('attempts');
+let matchesEl = document.getElementById('matches');
+let shuffleBtn = document.getElementById('shuffleBtn');
+let lbEl = document.getElementById('lb');
+
+let first=null, second=null, attempts=0, matches=0;
+let player = localStorage.getItem('dg_player') || '';
+let leaderboardKey = 'leaderboard_memory';
+let leaderboard = JSON.parse(localStorage.getItem(leaderboardKey) || '[]');
+
+function makeDeck(){
+  const doubled = items.concat(items);
+  return doubled
+    .map(v=>({v,id:Math.random().toString(36).slice(2,9)}))
+    .sort(()=>Math.random()-0.5);
+}
+
+function renderBoard(){
+  boardEl.innerHTML='';
+  const deck = makeDeck();
+  deck.forEach(card=>{
+    const el = document.createElement('div');
+    el.className='card';
+    el.dataset.id = card.id;
+    el.dataset.value = card.v;
+    el.textContent='?';
+    el.onclick = ()=>flip(el);
+    boardEl.appendChild(el);
+  });
+  attempts=0;matches=0;updateMeta();
+}
+
+function updateMeta(){ attemptsEl.textContent = attempts; matchesEl.textContent = matches; }
+
+function flip(el){
+  if(el.classList.contains('flipped')||el.classList.contains('matched')) return;
+  el.classList.add('flipped');
+  el.textContent = el.dataset.value;
+  if(!first) { first = el; return; }
+  if(!second) { second = el; attempts++; updateMeta(); }
+  if(first && second){
+    if(first.dataset.value === second.dataset.value){
+      first.classList.add('matched'); second.classList.add('matched'); matches++;
+      first=null; second=null; updateMeta();
+      if(matches === items.length){
+        const score = Math.max(0, 100 - attempts);
+        saveScore(score);
+        alert(`Well done ${player || 'Player'}! Score: ${score}`);
+      }
+    } else {
+      setTimeout(()=>{
+        first.classList.remove('flipped'); first.textContent='?';
+        second.classList.remove('flipped'); second.textContent='?';
+        first=null; second=null;
+      }, 700);
+    }
+  }
+}
+
+function saveScore(score){
+  const name = player || localStorage.getItem('username') || prompt('Enter name for leaderboard:') || 'Anonymous';
+  try{ if(window.DGLeaderboard) window.DGLeaderboard.addScore(name, 'Memory Game', score);
+    else {
+      leaderboard.push({name,score,date:Date.now()});
+      localStorage.setItem(leaderboardKey, JSON.stringify(leaderboard));
+      renderLeaderboard();
+    }
+  }catch(e){ console.warn('DGLeaderboard error', e); }
+}
+
+function renderLeaderboard(){
+  lbEl.innerHTML='';
+  if(window.DGLeaderboard){
+    const top = window.DGLeaderboard.getTop(20).filter(r=>r.game && r.game.toLowerCase().includes('memory'));
+    top.slice(0,10).forEach((r,i)=>{ const li=document.createElement('li'); li.textContent=`${r.name} — ${r.score}`; lbEl.appendChild(li); });
+  } else {
+    leaderboard.sort((a,b)=>b.score-a.score).slice(0,10).forEach(row=>{ const li = document.createElement('li'); li.textContent = `${row.name} — ${row.score}`; lbEl.appendChild(li); });
+  }
+}
+
+shuffleBtn.onclick = ()=>{ renderBoard(); };
+
+// Home overlay
+function showHome(){
+  const overlay = document.getElementById('home');
+  const input = document.getElementById('nameInput');
+  const start = document.getElementById('start');
+  if(!player){ overlay.style.display='flex'; input.focus(); }
+  else overlay.style.display='none';
+  start.onclick = ()=>{
+    const v = input.value.trim(); if(!v) { alert('Enter a name'); input.focus(); return; }
+    player = v; localStorage.setItem('dg_player', player); overlay.style.display='none';
+  };
+}
+
+// On load
+window.addEventListener('load', ()=>{ renderBoard(); renderLeaderboard(); showHome(); });
+window.addEventListener('dg_leaderboard_updated', ()=> renderLeaderboard());
+window.addEventListener('storage', (e)=>{ if(e.key==='dg_leaderboard') renderLeaderboard(); });
+</script>
+</body>
+</html>

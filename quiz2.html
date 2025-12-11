@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>digindia quiz</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Orbitron', 'Arial', sans-serif;
+    background: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/...') no-repeat center center fixed;
+    background-size: cover;
+    background-attachment: fixed;
+    color: #fff;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(135deg, rgba(0, 20, 40, 0.8), rgba(0, 50, 100, 0.8));
+    pointer-events: none;
+    z-index: 1;
+  }
+  /* Home icon styling */
+  #home {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    font-size: 1.8em;
+    color: #00ffff;
+    text-shadow: 0 0 10px rgba(0,255,255,0.7);
+    z-index: 3;
+
+
+    cursor: pointer;
+    transition: transform 0.3s, color 0.3s;
+  }
+  #home:hover {
+    color: #00ff88;
+    transform: scale(1.2);
+  }
+  h1 {
+    color: #00ffff;
+    font-size: 3.2em;
+    text-shadow: 0 0 20px rgba(0, 255, 255, 0.8), 0 0 40px rgba(0, 100, 255, 0.5);
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+    animation: glow 2s ease-in-out infinite;
+    z-index: 2;
+    position: relative;
+  }
+  @keyframes glow {
+    0%, 100% { text-shadow: 0 0 20px rgba(0, 255, 255, 0.8), 0 0 40px rgba(0, 100, 255, 0.5); }
+    50% { text-shadow: 0 0 30px rgba(0, 255, 255, 1), 0 0 60px rgba(0, 150, 255, 0.8); }
+  }
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .card {
+    background: linear-gradient(135deg, rgba(2, 20, 39, 0.95), rgba(11, 34, 51, 0.95));
+    padding: 28px;
+    border-radius: 15px;
+    max-width: 900px;
+    width: 94vw;
+    border: 2px solid #00c6ff;
+    box-shadow: 0 0 30px rgba(0, 198, 255, 0.4), inset 0 0 20px rgba(0, 100, 150, 0.2);
+    z-index: 2;
+    position: relative;
+    animation: slideDown 0.6s ease;
+  }
+  .review-container {
+    display: flex;
+    gap: 20px;
+    max-width: 1200px;
+    width: 95vw;
+  }
+  #review-card {
+    flex: 1;
+    background: linear-gradient(135deg, rgba(2, 20, 39, 0.95), rgba(11, 34, 51, 0.95));
+    padding: 28px;
+    border-radius: 15px;
+    border: 2px solid #00c6ff;
+    box-shadow: 0 0 30px rgba(0, 198, 255, 0.4), inset 0 0 20px rgba(0, 100, 150, 0.2);
+    z-index: 2;
+    position: relative;
+    animation: slideDown 0.6s ease;
+    display: none;
+  }
+  #scoreboard-side {
+    width: 120px;
+    background: linear-gradient(135deg, rgba(2, 20, 39, 0.95), rgba(11, 34, 51, 0.95));
+    padding: 20px;
+    border-radius: 15px;
+    border: 2px solid #00c6ff;
+    box-shadow: 0 0 30px rgba(0, 198, 255, 0.4), inset 0 0 20px rgba(0, 100, 150, 0.2);
+    z-index: 2;
+    position: relative;
+    animation: slideDown 0.6s ease;
+    display: none;
+    max-height: 600px;
+    overflow-y: auto;
+  }
+  .scoreboard-side-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .review-options button {
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 2px solid #00c6ff;
+    background: linear-gradient(90deg, #0072ff, #00c6ff);
+    color: #fff;
+    cursor: pointer;
+    font-weight: 700;
+    transition: all 0.3s;
+    text-align: left;
+    font-size: 1em;
+    margin-bottom: 8px;
+  }
+  .review-options button:hover {
+    background: linear-gradient(90deg, #00c6ff, #00ffff);
+    box-shadow: 0 0 20px rgba(0, 198, 255, 0.8);
+    transform: translateX(8px);
+  }
+  .review-options button.correct {
+    background: linear-gradient(90deg, #00cc00, #00ff64);
+    border-color: #00ff64;
+    box-shadow: 0 0 15px rgba(0, 255, 100, 0.5);
+  }
+  .review-options button.wrong {
+    background: linear-gradient(90deg, #cc0000, #ff3333);
+    border-color: #ff3333;
+    box-shadow: 0 0 15px rgba(255, 51, 51, 0.5);
+  }
+  .answer-indicator {
+    font-size: 0.9em;
+    margin-top: 8px;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+  }
+  .answer-indicator.user-correct {
+    background: rgba(0, 255, 100, 0.2);
+    color: #00ff64;
+    border: 1px solid #00ff64;
+  }
+  .answer-indicator.user-wrong {
+    background: rgba(255, 50, 50, 0.2);
+    color: #ff3333;
+    border: 1px solid #ff3333;
+  }
+  #qcount { color: #00ff88; font-weight: 700; margin-bottom: 8px; font-size: 0.9em; }
+  h2 { color: #00ffff; font-size: 1.8em; margin: 12px 0; line-height: 1.4; text-shadow: 0 0 10px rgba(0, 255, 255, 0.5); }
+  .options { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+  .options button {
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 2px solid #00c6ff;
+    background: linear-gradient(90deg, #0072ff, #00c6ff);
+    color: #fff;
+    cursor: pointer;
+    font-weight: 700;
+    transition: all 0.3s;
+    text-align: left;
+    font-size: 1em;
+  }
+  .options button:hover {
+    background: linear-gradient(90deg, #00c6ff, #00ffff);
+    box-shadow: 0 0 20px rgba(0, 198, 255, 0.8);
+    transform: translateX(8px);
+  }
+  .options button:active { transform: translateX(8px) scale(0.98); }
+  #next, #restart {
+    padding: 12px 20px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(90deg, #00c6ff, #0072ff);
+    color: #002;
+    cursor: pointer;
+    font-weight: 700;
+    transition: all 0.3s;
+    font-size: 1em;
+  }
+  #next:hover, #restart:hover {
+    background: linear-gradient(90deg, #0072ff, #00ffff);
+    box-shadow: 0 0 20px rgba(0, 198, 255, 0.8);
+    transform: scale(1.05);
+  }
+  /* Notification styles */
+  .notification {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 30px 50px;
+    border-radius: 15px;
+    font-size: 1.5em;
+    font-weight: 700;
+    z-index: 1000;
+    animation: slideIn 0.4s ease;
+    box-shadow: 0 0 40px rgba(0, 255, 255, 0.8);
+  }
+  .notification.correct {
+    background: linear-gradient(135deg, rgba(0, 255, 100, 0.9), rgba(0, 200, 100, 0.9));  
+    border: 2px solid #00ff64;
+    color: #fff;
+  }
+  .notification.wrong {
+    background: linear-gradient(135deg, rgba(255, 50, 50, 0.9), rgba(200, 0, 0, 0.9));
+    border: 2px solid #ff3333;
+    color: #fff;
+  }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translate(-50%, -60%); }
+    to { opacity: 1; transform: translate(-50%, -50%); }
+  }
+  @keyframes slideOut {
+    from { opacity: 1; transform: translate(-50%, -50%); }
+    to { opacity: 0; transform: translate(-50%, -60%); }
+  }
+  .notification.hide { animation: slideOut 0.4s ease; }
+  /* Scoreboard styles */
+  #scoreboard {
+    background: linear-gradient(135deg, rgba(2, 20, 39, 0.95), rgba(11, 34, 51, 0.95));
+    padding: 28px;
+    border-radius: 15px;
+    max-width: 900px;
+    width: 94vw;
+    border: 2px solid #00c6ff;
+    box-shadow: 0 0 30px rgba(0, 198, 255, 0.4), inset 0 0 20px rgba(0, 100, 150, 0.2);
+    z-index: 2;
+    position: relative;
+    animation: slideDown 0.6s ease;
+    margin-top: 20px;
+    display: none;
+  }
+  #scoreboard h2 {
+    color: #00ffff;
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .scoreboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+    gap: 12px;
+  }
+  .score-dot {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-weight: 700;
+    transition: all 0.3s;
+    border: 2px solid;
+    font-size: 0.8em;
+  }
+  .score-dot.correct {
+    background: linear-gradient(135deg, #00ff64, #00cc00);
+    border-color: #00ff64;
+    box-shadow: 0 0 15px rgba(0, 255, 100, 0.6);
+  }
+  .score-dot.wrong {
+    background: linear-gradient(135deg, #ff3333, #cc0000);
+    border-color: #ff3333;
+    box-shadow: 0 0 15px rgba(255, 51, 51, 0.6);
+  }
+  .score-dot:hover {
+    transform: scale(1.15);
+    box-shadow: 0 0 25px rgba(0, 255, 200, 0.8);
+  }
+  .score-summary {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 1.3em;
+    color: #00ffff;
+  }
+  .score-summary .correct-text { color: #00ff64; font-weight: 700; }
+  .score-summary .wrong-text { color: #ff3333; font-weight: 700; }
+</style>
+</head>
+<body>
+  <!-- Floating Home Icon -->
+  <a id="home" href="file:///C:/Users/Baldev%20Singh/Downloads/test.html" title="Go Home"><i class="fas fa-home"></i></a>
+
+  <h1>Digi-India Quiz</h1>
+  <div class="card" id="quiz-card">
+    <div id="qcount"></div>
+    <h2 id="question"></h2>
+    <div class="options" id="options"></div>
+    <div style="margin-top:12px;display:flex;gap:8px;">
+      <button id="next">Next</button>
+      <button id="restart">Restart</button>
+    </div>
+  </div>
+
+  <div class="review-container" id="review-container">
+    <div id="review-card">
+      <div id="review-qcount"></div>
+      <h2 id="review-question"></h2>
+      <div class="review-options" id="review-options"></div>
+      <div id="answer-status"></div>
+    </div>
+    <div id="scoreboard-side">
+      <h3 style="color: #00ffff; font-size: 1em; margin-bottom: 15px; text-align: center;">Results</h3>
+      <div class="scoreboard-side-grid" id="scoreboardSideGrid"></div>
+    </div>
+  </div>
+
+  <div class="card" id="scoreboard">
+    <h2>Answer Results</h2>
+    <div class="scoreboard-grid" id="scoreboardGrid"></div>
+    <div class="score-summary">
+      <p>Score: <span class="correct-text" id="finalScore">0</span></p>
+      <p>Correct: <span class="correct-text" id="correctCount">0</span> | Wrong: <span class="wrong-text" id="wrongCount">0</span></p>
+    </div>
+    <div style="margin-top:12px;display:flex;gap:8px;justify-content:center;">
+      <button id="restartFromBoard">Restart Quiz</button>
+    </div>
+  </div>
+
+<script>
+const allQuestions = [
+  {q:'How can quantum computing be integrated into national‑level cybersecurity frameworks for e‑governance platforms under schemes like Digital India?', a:['By replacing all encryption systems','Through post-quantum cryptography implementation in government databases','By eliminating data localization requirements','By using quantum entanglement for authentication'], correct:1},
+  {q:'What would be the potential benefits and challenges of deploying quantum‑resistant encryption for systems managed by BharatNet across rural India?', a:['Benefits: future-proof security; Challenge: computational overhead on rural infrastructure','Benefits: lower costs; Challenge: faster data transmission','Benefits: easier user adoption; Challenge: no standards available','Benefits: better wireless signals; Challenge: quantum hardware required'], correct:0},
+  {q:'In what ways could a government‑sponsored "Quantum Research and Innovation Fund" support emerging‑tech startups?', a:['By providing grants for quantum-safe communication and computing R&D','By mandating quantum computers in all offices','By restricting AI research completely','By eliminating traditional encryption'], correct:0},
+  {q:'How might quantum computing accelerate data analytics for large‑scale public projects like nationwide census?', a:['By processing vast datasets exponentially faster and supporting real-time insights','By replacing human analysts','By eliminating the need for data centers','By requiring citizens to use quantum computers'], correct:0},
+  {q:'Could quantum computing help optimize national digital‑infrastructure networks (like under DigiInfra)?', a:['Yes, through quantum algorithms for network routing and resource allocation','No, quantum systems are too expensive','Only if all networks are replaced','Quantum computing has no infrastructure applications'], correct:0},
+  {q:'How effective has BharatNet been in enabling e‑governance delivery in rural areas?', a:['Highly effective in connecting remote areas to digital services; metrics include connectivity rates and e-governance adoption','Not effective, rural areas still lack access','BharatNet only works in urban areas','Rural e-governance is not necessary'], correct:0},
+  {q:'What role can state governments play in complementing central schemes like Digital India?', a:['State-level infrastructure, last-mile connectivity, and digital literacy programs tailored to regional needs','None, only central government can act','State governments should block Digital India','States should use separate digital systems'], correct:0},
+  {q:'How can emerging technologies (IoT, blockchain, AI) be leveraged under e‑governance frameworks?', a:['To improve transparency via blockchain, automate services with AI, monitor with IoT sensors','These technologies have no governance applications','Only blockchain is useful for government','E-governance is not digital'], correct:0},
+  {q:'What are the challenges in integrating legacy government databases with newer digital‑infrastructure initiatives?', a:['Incompatible systems, data format mismatches, security concerns, and need for phased migration strategies','Legacy systems are superior and should not be replaced','Digital systems cannot work with old databases','Integration is impossible'], correct:0},
+  {q:'How could a unified citizen‑data platform improve service delivery across health, education, and social welfare?', a:['Integrated data reduces redundancy, speeds up benefit delivery, and enables cross-sector insights; safeguards include encryption and consent management','Citizens should not have unified data platforms','Data silos are beneficial for privacy','No privacy safeguards are needed'], correct:0},
+  {q:'How can digital‑agriculture schemes enhance yield forecasting using emerging‑tech tools?', a:['Remote sensing, AI-based pest prediction, and IoT soil sensors provide real-time insights for crop planning','Digital agriculture is not useful','Only traditional farming methods work','Technology makes agriculture more complex'], correct:0},
+  {q:'What government policy interventions help small farmers benefit from agritech innovations?', a:['Subsidized IoT devices, digital literacy programs, market linkage platforms, and ensuring affordability','Agritech should only serve large farms','Small farmers should avoid technology','Policy is irrelevant to farming'], correct:0},
+  {q:'How can BharatNet connectivity enable climate‑resilient agriculture and market linkages?', a:['Real-time weather data, soil moisture monitoring, and direct market access through e-NAM platforms','Connectivity does not affect agriculture','Climate data is not available digitally','Markets should remain offline'], correct:0},
+  {q:'In the context of agrarian distress, how can digital platforms improve subsidy and insurance transparency?', a:['Blockchain-based tracking ensures transparent subsidy distribution, reduces fraud, and tracks insurance claims efficiently','Digital transparency is unnecessary','Subsidies should remain opaque','Insurance cannot be digitized'], correct:0},
+  {q:'How could a "Digital Agri Innovation Fund" help agritech startups?', a:['Grants for precision farming, supply-chain digitization, and farm-to-market traceability R&D; regulatory clarity and testing support','Startups cannot innovate in agriculture','Innovation funds are not necessary','All agritech must be government-developed'], correct:0},
+  {q:'How effective are schemes like PMKVY at preparing youth for emerging‑tech sector jobs?', a:['PMKVY can be enhanced with AI, data science, quantum computing curricula and industry partnerships to close skill gaps','PMKVY is irrelevant to tech jobs','Tech skills cannot be taught in training centers','Youth do not need emerging-tech training'], correct:0},
+  {q:'What initiatives should government pursue for emerging‑tech education integration?', a:['Update college curricula with AI, cybersecurity, quantum computing; partner with industry; support vocational training centers','Education does not need updating','Tech skills should not be taught formally','Only private sector should teach emerging tech'], correct:0},
+  {q:'How can digital infrastructure help deliver lifelong learning to rural populations?', a:['Online courses, digital libraries, mobile learning apps, and community centers with internet access enable continuous upskilling','Digital learning cannot reach rural areas','Lifelong learning is not important','Rural connectivity is irrelevant'], correct:0},
+  {q:'What are the challenges in recognizing non‑formal skills through digital credentials?', a:['Standardization issues, verifying skill levels, blockchain integration for tamper-proof credentials, and employer adoption','Digital credentials are unnecessary','Non-formal skills cannot be recognized','Standardization is impossible'], correct:0},
+  {q:'How could a public–private partnership (PPP) model scale tech‑skilling platforms across states?', a:['Government funding + private sector expertise + local training centers; revenue-sharing and equitable access models ensure regional coverage','PPPs are ineffective','Government and private sector should not collaborate','Skilling cannot be scaled regionally'], correct:0},
+  {q:'How can fintech improve financial inclusion under schemes like Pradhan Mantri Jan Dhan Yojana?', a:['Digital wallets, UPI, AI-driven lending, and blockchain reduce barriers to banking access for unbanked populations','Fintech does not improve inclusion','Traditional banking is superior','Digital finance is unnecessary'], correct:0},
+  {q:'How can government schemes like Ayushman Bharat integrate telemedicine and digital records?', a:['Cloud-based health records, AI diagnosis support, real-time telemedicine for rural clinics, and integrated health data analytics','Telemedicine cannot improve rural healthcare','Digital health records are insecure','Remote diagnosis is unreliable'], correct:0},
+  {q:'What policies encourage smart‑logistics and supply‑chain tracking adoption?', a:['Incentives for IoT/blockchain integration, procurement preferences, and regulatory clarity on traceability standards for exporters','Supply chains are too complex for digitization','Technology does not improve logistics','Traceability is not valuable'], correct:0},
+  {q:'How can PLI schemes align with Industry 4.0 adoption for manufacturing competitiveness?', a:['PLI incentives targeted at digitization, automation, and emerging-tech adoption; training support for workforce transition','Industry 4.0 is too expensive','PLI should not support technology','Manufacturing does not need modernization'], correct:0},
+  {q:'How can digitization help small exporters with standards and certification?', a:['Digital compliance platforms, automated documentation, blockchain-based certificates, and training in digital tools reduce barriers','Small exporters should not export','Standards are irrelevant','Digital compliance is unnecessary'], correct:0},
+  {q:'What role can government schemes play in ensuring equitable digital access for women and marginalized communities?', a:['Subsidized devices, targeted digital literacy, skill development, and supportive legal frameworks remove structural barriers','Equity is not a government concern','Women do not need tech training','Marginalized groups should not access technology'], correct:0},
+  {q:'How can state‑level projects complement central schemes to address regional healthcare disparities?', a:['State healthcare IT systems, localized telemedicine centers, regional medical data analytics, and customized health delivery models','Regional approaches are ineffective','Central schemes alone are sufficient','State governments cannot improve healthcare'], correct:0},
+  {q:'What risks (digital divide, data privacy, resource concentration) should government schemes mitigate?', a:['Implement progressive infrastructure rollout, strong data protection laws, and anti-monopoly regulations to ensure equitable, secure digitization','Risks do not exist','Privacy regulation is unnecessary','Concentrated resources are beneficial'], correct:0},
+  {q:'How can public procurement encourage adoption of green and advanced‑tech solutions?', a:['Tender preferences for sustainable/digital solutions, certification requirements, and support for MSME and startup participation in government contracts','Procurement does not affect innovation','Green tech should not be prioritized','MSMEs should not compete for contracts'], correct:0},
+  {q:'What metrics should government use to evaluate digital-infrastructure and emerging‑tech scheme success over 5–10 years?', a:['Connectivity rates, digital service adoption, skill-training completion, cost-of-service-delivery reduction, rural-urban parity, and citizen satisfaction surveys','Metrics are unnecessary','Success cannot be measured','Only GDP growth matters'], correct:0}
+];
+
+// Shuffle and select 10 random questions for this session
+function getSessionQuestions() {
+  // shuffle question order
+  const shuffled = allQuestions.slice().sort(() => Math.random() - 0.5);
+  const picked = shuffled.slice(0, 10);
+
+  // helper: return a copy of a question with its options shuffled and correct index updated
+  function shuffleOptionsForQuestion(origQ){
+    const opts = origQ.a.map((v,i)=>({v,i}));
+    // shuffle opts array
+    for(let i=opts.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [opts[i], opts[j]] = [opts[j], opts[i]];
+    }
+    const newA = opts.map(o=>o.v);
+    const newCorrect = opts.findIndex(o=>o.i === origQ.correct);
+    return { q: origQ.q, a: newA, correct: newCorrect };
+  }
+
+  // return shuffled copies with options shuffled per question
+  return picked.map(q => shuffleOptionsForQuestion(q));
+}
+
+let questions = getSessionQuestions();
+
+let idx=0, score=0;
+const qcountEl=document.getElementById('qcount');
+const qEl=document.getElementById('question');
+const opts=document.getElementById('options');
+const nextBtn=document.getElementById('next');
+const restartBtn=document.getElementById('restart');
+const quizCard=document.getElementById('quiz-card');
+const scoreboardEl=document.getElementById('scoreboard');
+const scoreboardGrid=document.getElementById('scoreboardGrid');
+const reviewContainer=document.getElementById('review-container');
+const reviewCard=document.getElementById('review-card');
+const scoreboardSide=document.getElementById('scoreboard-side');
+let player = localStorage.getItem('dg_player') || '';
+let answers = []; // Track all answers: {qIdx, isCorrect, userAnswer}
+
+function showNotification(isCorrect){
+  const notif = document.createElement('div');
+  notif.className = 'notification ' + (isCorrect ? 'correct' : 'wrong');
+  notif.textContent = isCorrect ? '✓ The answer is Correct!' : '✗ The answer is Wrong';
+  document.body.appendChild(notif);
+  
+  setTimeout(()=>{
+    notif.classList.add('hide');
+    setTimeout(()=>notif.remove(), 400);
+  }, 1500);
+}
+
+function renderQuestion(){
+  const q = questions[idx];
+  qcountEl.textContent = `Question ${idx+1} of ${questions.length}`;
+  qEl.textContent = q.q;
+  opts.innerHTML = '';
+  q.a.forEach((opt,i)=>{
+    const b = document.createElement('button'); 
+    b.textContent = opt; 
+    b.onclick = ()=>select(i);
+    opts.appendChild(b);
+  });
+}
+
+function select(i){
+  const correct = questions[idx].correct;
+  const isCorrect = i === correct;
+  
+  if(isCorrect){ score++; }
+  
+  answers.push({qIdx: idx, isCorrect: isCorrect, userAnswer: i, correctAnswer: correct});
+  showNotification(isCorrect);
+  
+  setTimeout(()=>{
+    idx++;
+    if(idx >= questions.length){ finish(); } 
+    else renderQuestion();
+  }, 1700);
+}
+
+function renderReviewQuestion(qIdx){
+  const q = questions[qIdx];
+  const ans = answers[qIdx];
+  
+  document.getElementById('review-qcount').textContent = `Question ${qIdx+1} of ${questions.length}`;
+  document.getElementById('review-question').textContent = q.q;
+  
+  const reviewOpts = document.getElementById('review-options');
+  reviewOpts.innerHTML = '';
+  
+  q.a.forEach((opt, i)=>{
+    const b = document.createElement('button');
+    b.textContent = opt;
+    
+    if(i === ans.correctAnswer) {
+      b.classList.add('correct');
+      b.textContent = '✓ ' + opt + ' (Correct Answer)';
+    } else if(i === ans.userAnswer && !ans.isCorrect) {
+      b.classList.add('wrong');
+      b.textContent = '✗ ' + opt + ' (Your Answer)';
+    }
+    
+    reviewOpts.appendChild(b);
+  });
+  
+  const statusDiv = document.getElementById('answer-status');
+  statusDiv.innerHTML = '';
+  if(ans.isCorrect) {
+    statusDiv.innerHTML = '<div class="answer-indicator user-correct">✓ Your answer was CORRECT</div>';
+  } else {
+    statusDiv.innerHTML = '<div class="answer-indicator user-wrong">✗ Your answer was WRONG</div>';
+  }
+}
+
+function renderScoreboard(){
+  scoreboardGrid.innerHTML = '';
+  const scoreboardSideGrid = document.getElementById('scoreboardSideGrid');
+  scoreboardSideGrid.innerHTML = '';
+  
+  answers.forEach((ans, i)=>{
+    const dot = document.createElement('div');
+    dot.className = 'score-dot ' + (ans.isCorrect ? 'correct' : 'wrong');
+    dot.textContent = (i + 1);
+    dot.onclick = ()=>viewQuestion(i);
+    dot.title = `Question ${i + 1}: ${ans.isCorrect ? 'Correct' : 'Wrong'}`;
+    scoreboardGrid.appendChild(dot);
+    
+    const sideDot = document.createElement('div');
+    sideDot.className = 'score-dot ' + (ans.isCorrect ? 'correct' : 'wrong');
+    sideDot.textContent = (i + 1);
+    sideDot.onclick = ()=>viewQuestion(i);
+    sideDot.title = `Question ${i + 1}: ${ans.isCorrect ? 'Correct' : 'Wrong'}`;
+    scoreboardSideGrid.appendChild(sideDot);
+  });
+  
+  document.getElementById('finalScore').textContent = score;
+  document.getElementById('correctCount').textContent = answers.filter(a=>a.isCorrect).length;
+  document.getElementById('wrongCount').textContent = answers.filter(a=>!a.isCorrect).length;
+}
+
+function viewQuestion(qIdx){
+  renderReviewQuestion(qIdx);
+  scoreboardEl.style.display = 'none';
+  reviewContainer.style.display = 'flex';
+  reviewCard.style.display = 'block';
+  scoreboardSide.style.display = 'block';
+}
+
+function finish(){
+  quizCard.style.display = 'none';
+  scoreboardEl.style.display = 'block';
+  renderScoreboard();
+  
+  const name = player || localStorage.getItem('username') || 'Anonymous';
+  try{ if(window.DGLeaderboard) window.DGLeaderboard.addScore(name, 'Quiz Challenge', score); }
+  catch(e){ console.warn('DGLeaderboard missing', e); }
+}
+
+nextBtn.onclick = ()=>{};
+restartBtn.onclick = ()=>{ restartQuiz(); };
+document.getElementById('restartFromBoard').onclick = ()=>{ restartQuiz(); };
+
+function restartQuiz(){
+  idx=0; 
+  score=0; 
+  answers = [];
+  questions = getSessionQuestions(); // Shuffle and get new 10 random questions
+  scoreboardEl.style.display = 'none';
+  reviewContainer.style.display = 'none';
+  quizCard.style.display = 'block';
+  renderQuestion();
+}
+
+window.addEventListener('load', ()=>{ renderQuestion(); });
+</script>
+</body>
+</html>

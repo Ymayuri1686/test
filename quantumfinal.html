@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Quantum Computing Slides</title>
+
+<!-- FontAwesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+  body {
+    margin: 0;
+    background: url('https://pixelplex.io/wp-content/uploads/2024/01/quantum-computing-applications-main.jpg') 
+    no-repeat center center/cover;
+    font-family: 'Orbitron' ;
+    color: #f5d479;
+    overflow: hidden;
+  }
+
+.page-frame {
+    width: 85vw;
+    height: 85vh;
+    margin: auto;
+    margin-top: 4vh;
+    background: rgba(0,0,0,0.7);
+    border: 3px solid gold;
+    border-radius: 25px;
+    box-shadow: 0 0 25px gold;
+    overflow: hidden;
+}
+
+.slider {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+}
+
+.slider::-webkit-scrollbar { display: none; }
+
+.slide {
+    min-width: 100%;
+    height: 100%;
+    padding: 40px;
+    box-sizing: border-box;
+    background: rgba(0,0,0,0.65);
+    scroll-snap-align: start;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+.slide img {
+    width: 560px;
+    height: 280px;
+    object-fit: cover;
+    border-radius: 20px;
+    border: 2px solid gold;
+}
+
+.text { max-width: 60%; font-style: italic; font-size: 1rem; }
+
+h1 {
+    font-size: 2.8rem;
+    font-style: italic;
+    text-align: center;
+}
+
+a { color: gold; }
+
+/* Home Button */
+.home-btn {
+    position: fixed;
+    top: 20px; left: 20px;
+    background: black;
+    color: gold;
+    border: 2px solid gold;
+    width: 55px; height: 55px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    font-size: 1.6rem;
+    cursor: pointer;
+    text-decoration: none;
+    z-index: 999;
+    transition: 0.3s;
+}
+.home-btn:hover { background: gold; color: black; transform: scale(1.1); }
+
+/* ARROWS */
+.arrow {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    background: black;
+    color: gold;
+    border: 2px solid gold;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    cursor: pointer;
+    z-index: 999;
+    transition: 0.3s;
+}
+.arrow:hover {
+    background: gold;
+    color: black;
+    transform: translateY(-50%) scale(1.1);
+}
+
+.arrow-left { left: 15px; }
+.arrow-right { right: 15px; }
+
+/* DOT NAVIGATION */
+.dot-nav {
+    position: fixed;
+    bottom: 30px;
+    width: 100%;
+    text-align: center;
+    z-index: 999;
+}
+
+.dot {
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    border: 2px solid gold;
+    border-radius: 50%;
+    margin: 0 8px;
+    background: black;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.dot.active,
+.dot:hover {
+    background: gold;
+    transform: scale(1.2);
+}
+ 
+ /* Horizontal Link Grid for Final Slide */
+.horizontal-grid {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 25px;
+    margin-top: 25px;
+}
+
+.h-item {
+    flex: 1;
+    background: rgba(255, 215, 0, 0.15);
+    border: 2px solid gold;
+    border-radius: 18px;
+    padding: 15px;
+    text-align: center;
+    transition: 0.3s;
+    cursor: pointer;
+    text-decoration: none;
+    color: gold;
+}
+
+.h-item:hover {
+    background: rgba(255, 215, 0, 0.35);
+    transform: scale(1.05);
+    box-shadow: 0 0 12px gold;
+}
+
+.h-item img {
+    width: 140px;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 15px;
+    border: 2px solid gold;
+    margin-bottom: 10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- HOME BUTTON -->
+<a href="final.html" class="home-btn">
+    <i class="fa-solid fa-house"></i>
+</a>
+
+<!-- ARROWS -->
+<div class="arrow arrow-left" onclick="prevSlide()"><i class="fa-solid fa-chevron-left"></i></div>
+<div class="arrow arrow-right" onclick="nextSlide()"><i class="fa-solid fa-chevron-right"></i></div>
+
+<!-- DOTS -->
+<div class="dot-nav">
+  <span class="dot" onclick="goToSlide(0)"></span>
+  <span class="dot" onclick="goToSlide(1)"></span>
+  <span class="dot" onclick="goToSlide(2)"></span>
+  <span class="dot" onclick="goToSlide(3)"></span>
+  <span class="dot" onclick="goToSlide(4)"></span>
+</div>
+
+<header class="main-header">
+    <h1>Quantum Computing and Its Applications</h1>
+</header>
+
+<div class="page-frame">
+<div class="slider" id="slider">
+
+  <!-- Slide 1 -->
+  <div class="slide">
+    <img src="https://i.pinimg.com/originals/e7/19/3d/e7193dd881c18d15ce79d8fa6d64329e.gif">
+    <div class="text">
+      <h2>What is Quantum Computing?</h2>
+      <p>
+        Quantum computing is an advanced field of technology that uses the principles of quantum mechanics to process information in ways that classical computers cannot. Instead of relying on traditional bits that store data as 0 or 1, quantum computers use **qubits**, which can exist in multiple states at the same time due to *superposition*. They can also become *entangled*, meaning the state of one qubit can instantly influence another, even over large distances. These unique properties allow quantum computers to perform extremely complex calculations at unprecedented speeds, making them promising tools for solving problems in cryptography, drug discovery, climate modeling, optimization, artificial intelligence, and advanced scientific research. While the technology is still in development, quantum computing has the potential to revolutionize multiple industries and reshape the future of computing.
+
+      </p>
+    </div>
+  </div>
+
+  <!-- Slide 2 -->
+  <div class="slide">
+    <div class="text">
+      <h2>Applications of Quantum Computing</h2>
+      <p>Quantum computing has a wide range of powerful applications across multiple fields. In cryptography, it can both break traditional encryption and enable ultra-secure quantum communication. In medicine and drug discovery, quantum computers can simulate molecules with incredible accuracy, helping researchers design new drugs and understand complex diseases much faster. They also enhance artificial intelligence by processing massive datasets efficiently and improving machine learning algorithms. In finance, quantum systems can optimize investment portfolios, predict market behavior, and detect fraud. Quantum computing also plays a major role in climate modeling, weather prediction, and solving large optimization problems such as traffic management and supply-chain planning. Additionally, it accelerates the development of advanced materials, better batteries, and new technologies. Overall, quantum computing has the potential to transform industries by offering speed and precision far beyond classical computers.
+.</p>
+    </div>
+    <img src="https://i.pinimg.com/originals/74/d6/50/74d650eb16b490e3857dbec75c1cb033.gif">
+  </div>
+
+  <!-- Slide 3 -->
+  <div class="slide">
+    <img src="https://i.pinimg.com/originals/2d/31/a4/2d31a4db625601bd1375ada3ae887de0.gif">
+    <div class="text">
+      <h2>Impact on the World</h2>
+      <p>Quantum computing has the potential to make a transformative impact on the world by revolutionizing how we solve complex problems. Its ability to process enormous amounts of data at unprecedented speeds could accelerate scientific discovery, leading to breakthroughs in medicine, energy, climate research, and materials science. Industries such as finance, healthcare, transportation, and cybersecurity may become far more efficient and intelligent through quantum-powered simulations and optimization. On a global scale, quantum computing could enhance national security through secure quantum communication while also challenging existing encryption systems, prompting nations to upgrade their digital infrastructure. Although the technology is still evolving, its future influence may reshape economies, create new industries, and redefine what is technologically possible, ultimately pushing humanity toward a new era of innovation and problem-solving.
+.</p>
+    </div>
+  </div>
+
+  <!-- Slide 4 -->
+  <div class="slide">
+    <img src="https://img.freepik.com/premium-photo/image-is-glowing-gold-line-graph-with-dark-background-graph-is-showing-steady-increase-time_14117-200010.jpg">
+    <div class="text">
+      <h2>Graph: Usage of Quantum Mechanics</h2>
+      <p>The usage of **quantum computing** has been steadily **increasing** as more industries recognize its potential to solve complex problems that traditional computers struggle with. Advances in **qubit technology**, **quantum processors**, and **cloud-based quantum platforms** from companies like IBM, Google, and Microsoft have made quantum tools more accessible to researchers and developers. As a result, fields such as **cryptography**, **drug discovery**, **finance**, **artificial intelligence**, and **material science** are rapidly adopting quantum techniques to accelerate innovation. Governments and major tech corporations are also increasing **investment**, **research funding**, and **global collaborations** to strengthen quantum ecosystems. With rising demand for **faster computation**, **better optimization**, and **secure communication**, the overall adoption and practical usage of quantum computing continues to grow every year, signaling a major shift toward a quantum-powered future.
+</p>
+    </div>
+  </div>
+
+ <!-- Slide 5 -->
+<div class="slide">
+    <div class="text">
+      <h2>Thank You</h2>
+      <p>Thank you for exploring quantum computing! Explore these amazing resources:</p>
+
+      <div class="horizontal-grid">
+
+        <a class="h-item" href="https://www.ibm.com/quantum">
+          <img src="https://news.mit.edu/sites/default/files/styles/news_article__image_gallery/public/images/202511/MIT-qBraid-01-press_0.jpg?itok=nL-eEgZz">
+          <div>IBM Quantum</div>
+        </a>
+
+        <a class="h-item" href="https://azure.microsoft.com/en-us/products/quantum">
+          <img src="https://cryptoslate.com/wp-content/uploads/2025/02/microsoft-quantum-chip.jpg">
+          <div>Microsoft Quantum</div>
+        </a>
+
+        <a class="h-item" href="https://quantumai.google/">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqi-QK555OnQ71egkg2KAN5nhf4rfzRBTAuw&s">
+          <div>Google Quantum AI</div>
+        </a>
+
+        <a class="h-item" href="https://quantum.country">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4oRZK-P7mo7SP5GHbWl5dklau57ecfFTqhA&s">
+          <div>Quantum Country</div>
+        </a>
+
+      </div>
+    </div>
+</div>
+
+
+<!-- JAVASCRIPT NAVIGATION -->
+<script>
+let slider = document.getElementById("slider");
+let slides = document.querySelectorAll(".slide");
+let dots = document.querySelectorAll(".dot");
+let currentIndex = 0;
+
+function updateDots() {
+    dots.forEach(d => d.classList.remove("active"));
+    dots[currentIndex].classList.add("active");
+}
+
+function goToSlide(index) {
+    currentIndex = index;
+    slider.scrollTo({
+        left: index * slider.clientWidth,
+        behavior: "smooth"
+    });
+    updateDots();
+}
+
+function nextSlide() {
+    if (currentIndex < slides.length - 1) currentIndex++;
+    else currentIndex = 0;
+    goToSlide(currentIndex);
+}
+
+function prevSlide() {
+    if (currentIndex > 0) currentIndex--;
+    else currentIndex = slides.length - 1;
+    goToSlide(currentIndex);
+}
+
+updateDots();
+</script>
+
+</body>
+</html>

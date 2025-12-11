@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital India Games</title>
+<link href="https://fonts.googleapis.com/css2?family=Vivaldi&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Algerian&display=swap" rel="stylesheet">
+<!-- Font Awesome for home icon -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+html { scroll-behavior: smooth; }
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Vivaldi', serif;
+    background: url('https://ideogram.ai/assets/image/lossless/response/vd8RcWdRTp6VxuiYZrD8GQ')
+                no-repeat center center fixed;
+    background-size: cover;
+    text-align: center;
+}
+
+/* MAIN TITLE */
+.main-title {
+    font-size: 3.5em;
+    background: linear-gradient(135deg, #5900ff, #ff1100);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: bold;
+    margin: 20px 0 10px 0;
+    padding: 0 20px;
+    font-family: 'Vivaldi', serif;
+}
+
+/* HEADER */
+header {
+    padding: 50px 0 30px;
+    background: linear-gradient(135deg, #f800ae, #6A0DAD);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 3em;
+    font-weight: 700;
+    text-shadow: none;
+    margin: 0;
+}
+
+/* GRID */
+.grids-container {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+    margin: 40px 20px;
+}
+
+.grid-item {
+    width: 200px;
+    background: linear-gradient(135deg, #09ff00, #f88800,white);
+    border-radius: 20px;
+    padding: 15px;
+    text-decoration: none;
+    color:rgb(17, 0, 255);
+    transition: 0.4s;
+}
+
+.grid-item:hover {
+    transform: scale(1.08);
+    box-shadow: 0 10px 30px rgba(255, 102, 0, 0.911);
+}
+
+.grid-title {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.grid-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+/* LOGIN OVERLAY */
+#loginOverlay {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 20px;
+    border-radius: 15px;
+    width: auto;
+    max-width: 300px;
+    z-index: 9999;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    display: none;
+}
+
+#loginOverlay.show {
+    display: block;
+}
+
+#loginBox {
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    width: 100%;
+    max-width: none;
+}
+
+#loginBox h2 {
+    margin: 0 0 8px 0;
+    font-size: 0.9em;
+    color: #333;
+    font-family: 'Algerian', serif;
+}
+
+#loginBox p {
+    margin: 0 0 12px 0;
+    font-size: 0.75em;
+    color: #666;
+    font-family: 'Algerian', serif;
+}
+
+#playerNameInput {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    font-size: 0.9em;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    font-family: 'Vivaldi', serif;
+}
+
+#startGameBtn {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 0.95em;
+    cursor: pointer;
+    background: linear-gradient(90deg, #4169E1, #6A0DAD);
+    color: white;
+    font-weight: bold;
+    width: 100%;
+    font-family: 'Vivaldi', serif;
+}
+
+/* PROFILE BUTTON */
+#profileBtn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff7a18, #ffb347);
+    border: none;
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
+    display: none;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    z-index: 10000;
+}
+
+#profileBtn:hover {
+    transform: scale(1.15);
+}
+/* Floating Home Icon */
+  #homeIcon{
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+    font-size: 2rem;
+    color : #18ff3e;
+    text-shadow: 0 0 12px black;
+    cursor: pointer;
+    transition: transform 0.3s, color 0.3s;
+  }
+  #homeIcon:hover{
+    color: #ff9900;
+    transform: scale(1.2);
+  }
+</style>
+</head>
+
+<body>
+    <!-- Floating Home Icon -->c
+<a id="homeIcon" href="file:///C:/Users/Baldev%20Singh/Downloads/final.html" title="Go Home"><i class="fas fa-home"></i></a>
+
+<!-- LOGIN OVERLAY -->
+<div id="loginOverlay">
+    <div id="loginBox">
+        <h2>Welcome to DigiGames</h2>
+        <p>Enter your name to start playing</p>
+        <input id="playerNameInput" type="text" placeholder="Your name">
+        <button id="startGameBtn">Start</button>
+    </div>
+</div>
+
+<!-- PROFILE BUTTON -->
+<button id="profileBtn">👤</button>
+
+<div class="main-title">Digital India Games</div>
+
+<header>Digital India Games</header>
+
+<div class="grids-container">
+    <a class="grid-item" href="file:///C:/Users/Baldev%20Singh/Downloads/memory.html">
+        <div class="grid-title">Memory Game</div>
+        <img class="grid-image" src="https://ideogram.ai/assets/progressive-image/balanced/response/fKvNvHvsSx6xFQC-PfqUsg">
+    </a>
+
+    <a class="grid-item" href="file:///C:/Users/Baldev%20Singh/Downloads/timeline.html">
+        <div class="grid-title">Timeline Masters</div>
+        <img class="grid-image" src="https://ideogram.ai/assets/image/lossless/response/Zap7F_A-SCmnbsXE82EFQQ">
+    </a>
+
+    <a class="grid-item" href="file:///C:/Users/Baldev%20Singh/Downloads/quiz2.html">
+        <div class="grid-title">Quiz Challenge</div>
+        <img class="grid-image" src="https://ideogram.ai/assets/image/lossless/response/vI8Hkj61RT6RfbDb9nUofw">
+    </a>
+
+    
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const overlay = document.getElementById('loginOverlay');
+    const input = document.getElementById('playerNameInput');
+    const btn = document.getElementById('startGameBtn');
+    const header = document.querySelector('header');
+    const profileBtn = document.getElementById('profileBtn');
+
+    function showOverlay() {
+        overlay.classList.add('show');
+        input.value = '';
+        input.focus();
+    }
+
+    function setName(name) {
+        localStorage.setItem('dg_player', name);
+        header.textContent = `Welcome, ${name}!`;
+        overlay.classList.remove('show');
+        profileBtn.style.display = 'block';
+    }
+
+    const saved = localStorage.getItem('dg_player');
+    if (saved) setName(saved);
+    else showOverlay();
+
+    btn.onclick = () => {
+        if (input.value.trim()) setName(input.value.trim());
+    };
+
+    input.addEventListener('keydown', e => {
+        if (e.key === 'Enter') btn.click();
+    });
+
+    profileBtn.onclick = showOverlay;
+});
+</script>
+
+</body>
+</html>

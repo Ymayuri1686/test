@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Advanced Chatbot</title>
+
+<style>
+/* GLOBAL */
+html, body {
+    margin: 0;
+    padding: 0;
+    background: #000000; /* PURE BLACK */
+    font-family: "Montserrat", sans-serif;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* BACKGROUND */
+.bg {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    z-index: 0;
+}
+
+/* PARALLAX */
+body:hover .bg {
+    transition: transform 0.25s linear;
+}
+
+/* CHAT CONTAINER */
+.chat-wrapper {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 70vw;
+    height: 90vh;
+    transform: translate(-50%, -50%);
+    border-radius: 14px;
+    background: rgba(10, 10, 20, 0.55);
+    backdrop-filter: blur(10px) saturate(1.6);
+    border: 1.5px solid #00f0ff55;
+    box-shadow:
+        0 0 10px #00f0ff33,
+        0 0 25px #00f0ff22 inset;
+    overflow: hidden;
+    z-index: 20;
+}
+
+.chat-wrapper iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: inherit;
+}
+
+/* CRT OVERLAY */
+.crt {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.015),
+        rgba(255,255,255,0.015) 2px,
+        rgba(0,0,0,0.03) 3px
+    );
+    z-index: 999;
+    opacity: 0.6;
+    mix-blend-mode: overlay;
+}
+
+/* MATRIX RAIN */
+#matrixRain {
+    position: fixed;
+    inset: 0;
+    z-index: 5;
+    pointer-events: none;
+}
+
+/* LOGO */
+.logo {
+    position: fixed;
+    top: 22px;
+    left: 80px; /* moved to make space for icon */
+    font-size: 20px;
+    letter-spacing: 2px;
+    color: #00faffdd;
+    text-shadow: 0 0 8px #00eaffaa;
+    font-weight: 600;
+    z-index: 50;
+}
+
+/* NEW HOME ICON (GREEN-BLACK GRADIENT) */
+.home-icon {
+    position: fixed;
+    top: 15px;
+    left: 20px;
+    z-index: 100;
+    font-size: 28px;
+    text-decoration: none;
+
+    padding: 12px 15px;
+    border-radius: 50%;
+
+    background: linear-gradient(135deg, #00ff55, #003300); /* green → black */
+    border: 2px solid #00ff55aa;
+
+    color: #ffffff;
+    box-shadow: 0 0 15px #00ff5599;
+    transition: 0.3s ease;
+}
+
+.home-icon:hover {
+    transform: scale(1.15);
+    box-shadow: 0 0 25px #00ff55;
+    background: linear-gradient(135deg, #00ff77, #002200);
+}
+
+/* Container */
+.container {
+    position: relative;
+    z-index: 2;
+    padding: 40px;
+}
+</style>
+</head>
+<body>
+
+<!-- HOME ICON -->
+<a href="final.html" class="home-icon">
+<svg width="28" height="28" viewBox="0 0 24 24" fill="#00ff55">
+  <path d="M12 3l9 7h-3v9h-4v-6H10v6H6v-9H3l9-7z"/>
+</svg>
+</a>
+
+<!-- Background -->
+<div class="bg" id="bg"></div>
+
+<!-- Logo -->
+<div class="logo">AI</div>
+
+<!-- MATRIX RAIN -->
+<canvas id="matrixRain"></canvas>
+
+<!-- Chat Window -->
+<div class="chat-wrapper">
+    <iframe src="https://www.chatbase.co/chatbot-iframe/OOVcZFwZuEqiuQJ38xwkk"></iframe>
+</div>
+
+<!-- CRT -->
+<div class="crt"></div>
+
+<script>
+/* PARALLAX */
+document.addEventListener("mousemove", e => {
+    const bg = document.getElementById("bg");
+    const x = (window.innerWidth / 2 - e.clientX) / 70;
+    const y = (window.innerHeight / 2 - e.clientY) / 70;
+    bg.style.transform = `translate(${x}px, ${y}px) scale(1.05)`;
+});
+
+/* MATRIX RAIN */
+const canvas = document.getElementById("matrixRain");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const chars = "01";
+const fontSize = 18;
+let columns = Math.floor(canvas.width / fontSize);
+
+const drops = Array(columns).fill(1);
+
+function drawMatrix() {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.08)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "#00ff55";
+    ctx.font = fontSize + "px monospace";
+    ctx.shadowColor = "#000";
+    ctx.shadowBlur = 2;
+
+    for (let i = 0; i < drops.length; i++) {
+        const text = chars[Math.floor(Math.random() * chars.length)];
+
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.99) {
+            drops[i] = 0;
+        }
+
+        drops[i] += 0.3;
+    }
+
+    requestAnimationFrame(drawMatrix);
+}
+
+drawMatrix();
+
+window.addEventListener("resize", () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    columns = Math.floor(canvas.width / fontSize);
+});
+</script>
+
+</body>
+</html>
